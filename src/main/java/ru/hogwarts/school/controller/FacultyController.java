@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
@@ -20,13 +22,17 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty addStudent(@RequestBody Faculty student) {
-        return facultyService.addFaculty(student);
+    public Faculty addStudent(@RequestBody Faculty faculty) {
+        return facultyService.addFaculty(faculty);
     }
 
     @GetMapping("/{id}")
-    public Faculty getFaculty(@PathVariable Long id) {
-        return facultyService.getFaculty(id);
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        Faculty faculty = facultyService.getFaculty(id);
+        if(faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(faculty);
     }
 
     @DeleteMapping("{id}")
@@ -35,8 +41,12 @@ public class FacultyController {
     }
 
     @PutMapping
-    public Faculty editFaculty(@RequestBody Faculty student) {
-        return facultyService.editFaculty(student);
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
+        if(faculty == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(foundFaculty);
     }
     @GetMapping("/filter")
     public Collection<Faculty> filterByAge(@RequestParam("color") String color) {
