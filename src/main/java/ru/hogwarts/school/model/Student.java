@@ -1,4 +1,4 @@
-package model;
+package ru.hogwarts.school.model;
 
 import java.util.Objects;
 
@@ -49,8 +49,7 @@ public class Student {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Student)) return false;
-        Student student = (Student) o;
+        if (!(o instanceof Student student)) return false;
         return getId() == student.getId() && getAge() == student.getAge() && Objects.equals(getName(), student.getName());
     }
 
